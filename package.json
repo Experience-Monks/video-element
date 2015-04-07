@@ -1,0 +1,32 @@
+{
+  "name": "video-element",
+  "version": "0.0.0",
+  "description": "A simple HTML5/YouTube Video Element with a unified interface",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/Jam3/video-element.git"
+  },
+  "keywords": [
+    "video",
+    "html5",
+    "youtube",
+    "dom"
+  ],
+  "author": {
+    "name": "Nick Poisson",
+    "email": "nick@jam3.com",
+    "url": "https://github.com/njam3"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Jam3/video-element/issues"
+  },
+  "homepage": "https://github.com/Jam3/video-element"
+}
