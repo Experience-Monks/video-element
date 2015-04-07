@@ -28,5 +28,11 @@
   "bugs": {
     "url": "https://github.com/Jam3/video-element/issues"
   },
-  "homepage": "https://github.com/Jam3/video-element"
+  "homepage": "https://github.com/Jam3/video-element",
+  "dependencies": {
+    "dom-event": "0.0.5",
+    "js-oop": "^1.0.0",
+    "require-sdk": "0.0.2",
+    "signals": "^1.0.0"
+  }
 }
