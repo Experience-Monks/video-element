@@ -44,6 +44,24 @@ var Video = new Class({
 			return (this.isYoutube) ? this.player.getVideoURL() : this.player.currentSrc;
 		}
 	},
+	width: {
+		get: function() {
+			return this.options.width;
+		},
+		set: function(value) {
+			this.options.width = value;
+			((this.isYoutube) ? this.player.getIframe() : this.player).setAttribute('width',this.options.width);
+		}
+	},
+	height: {
+		get: function() {
+			return this.options.height;
+		},
+		set: function(value) {
+			this.options.height = value;
+			((this.isYoutube) ? this.player.getIframe() : this.player).setAttribute('height',this.options.height);
+		}
+	},
 	videoWidth: {
 		get: function() {
 			return (this.isYoutube) ? this.options.width : this.player.videoWidth;
@@ -68,6 +86,8 @@ var Video = new Class({
 	_loaded: 0,
 	initialize: function(options,callback) {
 		if (!(this instanceof Video)) return new Video(options);
+		options.width = options.width || 'auto';
+		options.height = options.height || 'auto';
 
 		// Signals
 		this.onInit = new Signal();
@@ -87,8 +107,10 @@ var Video = new Class({
 			require('./lib/youtube')(options.url,options,function(error,player) {
 				if (!error) {
 					this.player = player;
+					this._ready = this._ready.bind(this);
 					this._checkYoutubeState = this._checkYoutubeState.bind(this);
-					this._checkYoutubeError = this._checkYoutubeError.bidn(this);
+					this._checkYoutubeError = this._checkYoutubeError.bind(this);
+					this.player.addEventListener('onReady',this._ready);
 					this.player.addEventListener('onStateChange',this._checkYoutubeState);
 					this.player.addEventListener('onError',this._checkYoutubeError);
 					this.onInit.dispatch();
@@ -108,6 +130,7 @@ var Video = new Class({
 					on(this.player,'play',this._checkHTML5State);
 					on(this.player,'pause',this._checkHTML5State);
 					on(this.player,'waiting',this._checkHTML5State);
+					options.el.appendChild(this.player);
 					this.onInit.dispatch();
 				} else {
 					this.onError.dispatch(error.message);
@@ -115,11 +138,11 @@ var Video = new Class({
 			}.bind(this));
 		}
 	},
-	_checkYoutubeState: function() {
+	_checkYoutubeState: function(e) {
 		this.playing = false;
 		switch (e.data) {
 			case this.player.api.PlayerState.CUED: 
-				this._ready();
+				// this._ready();
 				break;
 			case this.player.api.PlayerState.ENDED:
 				this.onEnd.dispatch();
@@ -171,7 +194,7 @@ var Video = new Class({
 	},
 	_checkHTML5State: function(e) {
 		this.playing = false;
-		switch (e.name) {
+		switch (e.type) {
 			case "canplay": 
 				this._ready();
 				break;
@@ -212,6 +235,9 @@ var Video = new Class({
 		if (this._readySent && this.playing) {
 			(this.isYoutube) ? this.pauseVideo() : this.player.pause();
 		}
+	},
+	css: function(obj) {
+		css((this.isYoutube) ? this.player.getIframe() : this.player,obj);
 	},
 	destroy: function() {
 		if (this.isYoutube) {
