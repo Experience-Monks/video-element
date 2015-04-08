@@ -85,7 +85,7 @@ var Video = new Class({
 	_duration: 0,
 	_loaded: 0,
 	initialize: function(options,callback) {
-		if (!(this instanceof Video)) return new Video(options);
+		if (!(this instanceof Video)) return new Video(options,callback);
 		options.width = options.width || 'auto';
 		options.height = options.height || 'auto';
 
@@ -114,8 +114,10 @@ var Video = new Class({
 					this.player.addEventListener('onStateChange',this._checkYoutubeState);
 					this.player.addEventListener('onError',this._checkYoutubeError);
 					this.onInit.dispatch();
+					if (this.callback) this.callback(undefined,this);
 				} else {
 					this.onError.dispatch(error.message);
+					if (this.callback) this.callback(error);
 				}
 			}.bind(this));
 		} else {
@@ -132,8 +134,10 @@ var Video = new Class({
 					on(this.player,'waiting',this._checkHTML5State);
 					options.el.appendChild(this.player);
 					this.onInit.dispatch();
+					if (this.callback) this.callback(undefined,this);
 				} else {
 					this.onError.dispatch(error.message);
+					if (this.callback) this.callback(error);
 				}
 			}.bind(this));
 		}
@@ -216,7 +220,6 @@ var Video = new Class({
 	_ready: function() {
 		if (!this._readySent) {
 			this._readySent = true;
-			if (this.callback) this.callback(undefined,this);
 			this.onReady.dispatch();
 			this.tick = setInterval(this._check.bind(this),50);
 		}
