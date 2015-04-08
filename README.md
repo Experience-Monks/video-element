@@ -57,6 +57,7 @@ The callback parameter returns an error as the first paramenter, and the player 
 
 The player implements signals for its event interface, these are the available signals:
 
+```bash
 onInit: player has been created
 onReady: player is ready to play
 onPlay: player has started playing
@@ -65,6 +66,7 @@ onEnd: player has reached the end of the video
 onProgress: dispatched on a timer while the video is playing, useful for tracking time/duration/load
 onBuffering: player is buffering more video
 onError: player has encountered an error
+```
 
 #### `player.play()`
 
