@@ -163,8 +163,8 @@ var Video = new Class({
 				break;
 		}
 	},
-	_checkYoutubeError: function(type) {
-		switch (type) {
+	_checkYoutubeError: function(e) {
+		switch (e.data) {
 			case 2:
 				this.onError.dispatch('Invalid YouTube Parameter');
 				break;
@@ -239,8 +239,9 @@ var Video = new Class({
 			(this.isYoutube) ? this.pauseVideo() : this.player.pause();
 		}
 	},
-	css: function(obj) {
-		css((this.isYoutube) ? this.player.getIframe() : this.player,obj);
+	appendTo: function(dom) {
+		this.optison.el = (typeof(dom)=='string') ? document.getElementById(dom) : dom;
+		this.options.el.appendChild(this.player);
 	},
 	destroy: function() {
 		if (this.isYoutube) {
@@ -254,7 +255,7 @@ var Video = new Class({
 			this.player.removeChild(this.player.source);
 			this.player.source = null;
 			this.player.load();
-			options.el.removeChild(this.player);
+			this.options.el.removeChild(this.player);
 		}
 	}
 });
