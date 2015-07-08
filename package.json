@@ -1,6 +1,6 @@
 {
   "name": "video-element",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A simple HTML5/YouTube Video Element with a unified interface",
   "main": "index.js",
   "directories": {
@@ -32,7 +32,6 @@
   "dependencies": {
     "dom-event": "0.0.5",
     "js-oop": "^1.0.0",
-    "raf": "^2.0.4",
     "require-sdk": "0.0.2",
     "signals": "^1.0.0"
   }
