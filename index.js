@@ -132,7 +132,7 @@ var Video = new Class({
 					on(this.player,'play',this._checkHTML5State);
 					on(this.player,'pause',this._checkHTML5State);
 					on(this.player,'waiting',this._checkHTML5State);
-					options.el.appendChild(this.player);
+					if (options.el) options.el.appendChild(this.player);
 					this.onInit.dispatch();
 					if (this.callback) this.callback(undefined,this);
 				} else {
@@ -240,7 +240,7 @@ var Video = new Class({
 		}
 	},
 	appendTo: function(dom) {
-		this.optison.el = (typeof(dom)=='string') ? document.getElementById(dom) : dom;
+		this.options.el = (typeof(dom)=='string') ? document.getElementById(dom) : dom;
 		this.options.el.appendChild(this.player);
 	},
 	destroy: function() {
