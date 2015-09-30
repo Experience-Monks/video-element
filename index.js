@@ -245,8 +245,13 @@ var Video = new Class({
 	},
 	destroy: function() {
 		if (this.isYoutube) {
-			this.player.removeEventListener('onStateChange',this._checkYoutubeState);
-			this.player.removeEventListener('onError',this._checkYoutubeError);
+			if (this.player.removeEventListener) {
+				this.player.removeEventListener('onStateChange',this._checkYoutubeState);
+				this.player.removeEventListener('onError',this._checkYoutubeError);
+			} else {
+				this._checkYoutubeState = function() {};
+				this._checkYoutubeError = function() {};
+			}
 			this.player.destroy();
 		} else {
 			on.off(this.player,'statechange',this.checkHTML5State);
