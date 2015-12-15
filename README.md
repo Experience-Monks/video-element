@@ -43,7 +43,7 @@ el: 'vid2', 					// The dom element to add the player to,
 								// this can be left blank and you can use appendTo later
 width: '100%',
 height: '100%',
-parameters: {
+parameters: { 		// Any youtube supported parameters can be used here
 	controls: 1,
 	autoplay: 0,
 	loop: 0,
