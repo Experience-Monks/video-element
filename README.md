@@ -43,13 +43,19 @@ el: 'vid2', 					// The dom element to add the player to,
 								// this can be left blank and you can use appendTo later
 width: '100%',
 height: '100%',
-controls: true,
-autoplay: false,
+parameters: {
+	controls: 1,
+	autoplay: 0,
+	loop: 0,
+	autohide: 2,
+	showinfo: 0
+},
 preload: true,
 poster: '',
-loop: false,
 muted: false
 ```
+
+You can find more information about the supported params in their values in [https://developers.google.com/youtube/player_parameters](https://developers.google.com/youtube/player_parameters).
 
 The callback parameter returns an error as the first paramenter, and the player object as the second. If there is an error, the player will be undefined, if not, the error will be undefined.
 
