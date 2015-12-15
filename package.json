@@ -1,6 +1,6 @@
 {
   "name": "video-element",
-  "version": "0.1.2",
+  "version": "1.0.0",
   "description": "A simple HTML5/YouTube Video Element with a unified interface",
   "main": "index.js",
   "directories": {
