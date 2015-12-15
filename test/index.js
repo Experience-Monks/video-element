@@ -1,4 +1,8 @@
-var Video = require('./index');
+var Video = require('../index');
+
+var div = document.createElement('div');
+div.id = 'youtube-video';
+document.body.appendChild(div);
 
 var myVid = new Video({
 	type: 'youtube',

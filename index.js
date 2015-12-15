@@ -219,6 +219,7 @@ var Video = new Class({
 	},
 	_ready: function() {
 		if (!this._readySent) {
+			if (this.options.type=='youtube' && this.options.muted) this.player.mute();
 			this._readySent = true;
 			this.onReady.dispatch();
 			this.tick = setInterval(this._check.bind(this),50);
