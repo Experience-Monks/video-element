@@ -32,7 +32,7 @@
   "dependencies": {
     "dom-event": "0.0.5",
     "js-oop": "^1.0.0",
-    "require-sdk": "0.0.2",
+    "require-sdk": "git@github.com:Jam3/require-sdk.git",
     "signals": "^1.0.0"
   }
 }
