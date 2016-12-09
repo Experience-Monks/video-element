@@ -13,10 +13,10 @@ var Video = new Class({
 	},
 	volume: {
 		get: function() {
-			return (this.isYoutube) ? this.player.getVolume() : this.player.volume;
+			return (this.isYoutube) ? this.player.setVolume && this.player.getVolume() : this.player.volume;
 		},
 		set: function(value) {
-			(this.isYoutube) ? this.player.setVolume(value) : this.player.volume = value;
+			(this.isYoutube) ? this.player.setVolume && this.player.setVolume(value) : this.player.volume = value;
 		}
 	},
 	muted: {
@@ -69,7 +69,7 @@ var Video = new Class({
 	},
 	videoHeight: {
 		get: function() {
-			return (this.isYoutube) ? this.options.height : this.player.videoHeight;	
+			return (this.isYoutube) ? this.options.height : this.player.videoHeight;
 		}
 	},
 	duration: {
@@ -98,34 +98,40 @@ var Video = new Class({
 		this.onProgress = new Signal();
 		this.onBuffering = new Signal();
 		this.onError = new Signal();
-		
+    this.playing = false;
+
+    this._ready = this._ready.bind(this);
+    this._checkYoutubeState = this._checkYoutubeState.bind(this);
+    this._checkYoutubeError = this._checkYoutubeError.bind(this);
+    this._checkHTML5State = this._checkHTML5State.bind(this);
+    this._checkHTML5Error = this._checkHTML5Error.bind(this);
+
 		this.options = options;
 		this.callback = callback;
-		this.isYoutube = (options.type=='youtube');
-		options.el = (typeof(options.el)=='string') ? document.getElementById(options.el) : options.el;
-		if (this.isYoutube) {
+		this.isYoutube = (options.type === 'youtube');
+		options.el = (typeof(options.el) === 'string') ? document.getElementById(options.el) : options.el;
+
+    var _this = this;
+
+    if (this.isYoutube) {
 			require('./lib/youtube')(options.url,options,function(error,player) {
 				if (!error) {
-					this.player = player;
-					this._ready = this._ready.bind(this);
-					this._checkYoutubeState = this._checkYoutubeState.bind(this);
-					this._checkYoutubeError = this._checkYoutubeError.bind(this);
-					this.player.addEventListener('onReady',this._ready);
-					this.player.addEventListener('onStateChange',this._checkYoutubeState);
-					this.player.addEventListener('onError',this._checkYoutubeError);
-					this.onInit.dispatch();
+					_this.player = player;
+					_this.player.addEventListener('onReady',_this._ready);
+					_this.player.addEventListener('onStateChange',_this._checkYoutubeState);
+					_this.player.addEventListener('onError',_this._checkYoutubeError);
+					_this.onInit.dispatch();
 					if (this.callback) this.callback(undefined,this);
 				} else {
 					this.onError.dispatch(error.message);
 					if (this.callback) this.callback(error);
 				}
-			}.bind(this));
+			}.bind(_this));
 		} else {
 			require('./lib/html5.js')(options.url,options,function(error,player) {
 				if (!error) {
 					this.player = player;
-					this._checkHTML5State = this._checkHTML5State.bind(this);
-					this._checkHTML5Error = this._checkHTML5Error.bind(this);
+
 					on(this.player,'error',this._checkHTML5Error);
 					on(this.player,'canplay',this._checkHTML5State);
 					on(this.player,'ended',this._checkHTML5State);
@@ -143,9 +149,8 @@ var Video = new Class({
 		}
 	},
 	_checkYoutubeState: function(e) {
-		this.playing = false;
 		switch (e.data) {
-			case this.player.api.PlayerState.CUED: 
+			case this.player.api.PlayerState.CUED:
 				// this._ready();
 				break;
 			case this.player.api.PlayerState.ENDED:
@@ -156,6 +161,7 @@ var Video = new Class({
 				this.onPlay.dispatch();
 				break;
 			case this.player.api.PlayerState.PAUSED:
+        this.playing = false;
 				this.onPause.dispatch();
 				break;
 			case this.player.api.PlayerState.BUFFERING:
@@ -199,7 +205,7 @@ var Video = new Class({
 	_checkHTML5State: function(e) {
 		this.playing = false;
 		switch (e.type) {
-			case "canplay": 
+			case "canplay":
 				this._ready();
 				break;
 			case "ended":
@@ -219,7 +225,7 @@ var Video = new Class({
 	},
 	_ready: function() {
 		if (!this._readySent) {
-			if (this.options.type=='youtube' && this.options.muted) this.player.mute();
+			if (this.options.type === 'youtube' && this.options.muted) this.player.mute();
 			this._readySent = true;
 			this.onReady.dispatch();
 			this.tick = setInterval(this._check.bind(this),50);
@@ -241,7 +247,7 @@ var Video = new Class({
 		}
 	},
 	appendTo: function(dom) {
-		this.options.el = (typeof(dom)=='string') ? document.getElementById(dom) : dom;
+		this.options.el = (typeof(dom) === 'string') ? document.getElementById(dom) : dom;
 		this.options.el.appendChild(this.player);
 	},
 	destroy: function() {
