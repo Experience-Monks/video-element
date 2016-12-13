@@ -98,13 +98,13 @@ var Video = new Class({
 		this.onProgress = new Signal();
 		this.onBuffering = new Signal();
 		this.onError = new Signal();
-	    this.playing = false;
+	  this.playing = false;
 
-	    this._ready = this._ready.bind(this);
-	    this._checkYoutubeState = this._checkYoutubeState.bind(this);
-	    this._checkYoutubeError = this._checkYoutubeError.bind(this);
-	    this._checkHTML5State = this._checkHTML5State.bind(this);
-	    this._checkHTML5Error = this._checkHTML5Error.bind(this);
+    this._ready = this._ready.bind(this);
+    this._checkYoutubeState = this._checkYoutubeState.bind(this);
+    this._checkYoutubeError = this._checkYoutubeError.bind(this);
+    this._checkHTML5State = this._checkHTML5State.bind(this);
+    this._checkHTML5Error = this._checkHTML5Error.bind(this);
 
 
 		this.options = options;
@@ -112,21 +112,22 @@ var Video = new Class({
 		this.isYoutube = (options.type === 'youtube');
 		options.el = (typeof(options.el) === 'string') ? document.getElementById(options.el) : options.el;
 
-    	if (this.isYoutube) {
-			require('./lib/youtube')(options.url,options,function(error,player) {
-				if (!error) {
-					this.player = player;
-					this.player.addEventListener('onReady',this._ready);
-					this.player.addEventListener('onStateChange',this._checkYoutubeState);
-					this.player.addEventListener('onError',this._checkYoutubeError);
-					this.onInit.dispatch();
-					
-					if (this.callback) this.callback(undefined,this);
-				} else {
-					this.onError.dispatch(error.message);
-					if (this.callback) this.callback(error);
-				}
-			}.bind(this));
+  	if (this.isYoutube) {
+		require('./lib/youtube')(options.url,options,function(error,player) {
+			if (!error) {
+				this.player = player;
+				this.player.addEventListener('onReady',this._ready);
+				this.player.addEventListener('onStateChange',this._checkYoutubeState);
+				this.player.addEventListener('onError',this._checkYoutubeError);
+				this.onInit.dispatch();
+				
+				if (this.callback) this.callback(undefined,this);
+			} else {
+				this.onError.dispatch(error.message);
+				if (this.callback) this.callback(error);
+			}
+		}.bind(this));
+		
 		} else {
 			require('./lib/html5.js')(options.url,options,function(error,player) {
 				if (!error) {
