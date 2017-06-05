@@ -1,6 +1,6 @@
 {
   "name": "video-element",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A simple HTML5/YouTube Video Element with a unified interface",
   "main": "index.js",
   "directories": {
@@ -32,7 +32,7 @@
   "dependencies": {
     "dom-event": "0.0.5",
     "js-oop": "^1.0.0",
-    "require-sdk": "git@github.com:Jam3/require-sdk.git",
+    "require-sdk": "github:Jam3/require-sdk",
     "signals": "^1.0.0"
   }
 }
