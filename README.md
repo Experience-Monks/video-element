@@ -92,4 +92,4 @@ Destroys the video and removes it from the dom
 
 ## License
 
-MIT, see [LICENSE.md](http://github.com/njam3/video-element/blob/master/LICENSE.md) for details.
+MIT, see [LICENSE.md](http://github.com/jam3/video-element/blob/master/LICENSE.md) for details.
